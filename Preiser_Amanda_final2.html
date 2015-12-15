@@ -9,13 +9,13 @@
 	  var shapes = []
 	  var timer;
 	  var timerTwo;
-	  var possibleShapes = ['drop','triangle','square','circle','cloud'];
+	  var possibleShapes = ['drop','square','circle','cloud'];
 	  function Shape(x, y, color) {
 		this.x = x;
 		this.y = y;
-		this.size = Math.random()*20+5;
-		this.dx = Math.random()*4-2;
-		this.dy = Math.random()*4-2;
+		this.size = 20;
+		this.dx = 5-3;
+		this.dy = 5-3;
 		this.color = color;
 		this.shape = possibleShapes[Math.floor(Math.random()*possibleShapes.length)];
 	  }
@@ -25,14 +25,16 @@
         window.addEventListener('resize', resizeCanvas, false);
         window.addEventListener('orientationchange', resizeCanvas, false);
         
+		
+        
         resizeCanvas();
-		canvas.onmousemove = function(event) {
-			onmousemove(event.clientX, event.clientY);
+		canvas.onclick = function(event) {
+			handleClick(event.clientX, event.clientY);
 		};
 		timer = setInterval(resizeCanvas, 70);
-		timerTwo = setInterval(newShape, 80);
+		//timerTwo = setInterval(newShape, 80);
       }
-      function onmousemove(x,y){
+      function handleClick(x,y){
       	var found = false
       	for(var i = 0; i < shapes.length; i++){
       		d = Math.sqrt((shapes[i].x - x)*( shapes[i].x-x)+(shapes[i].y-y)*(shapes[i].y-y));
@@ -42,6 +44,7 @@
 
       		}
       	}
+
       	fillBackgroundColor();
 	if(!found){
 		var colors = ['#00ff00', '#ffff99','#ffb3ff', '#b266ff' , '#ff3333', '#33ccff' , '#ffa366'];
@@ -56,8 +59,8 @@
 	this.x = x;
 	this.y = y;
 	this.color = color;
-	this.dx = Math.random()* 10-5;
-	this.dy = Math.random()* 10-5;
+	this.dx =  -10;
+	this.dy =  -10;
 }
     function drawCircle(circle){
 	context.globalCompositeOperation = "lighter";
@@ -88,17 +91,8 @@
 		context.fillStyle = square.color;
 		context.fillRect(square.x, square.y, 100, 50);
       }	 
-	  function drawTriangle(triangle) {
-		context.beginPath();
-		context.fillStyle = triangle.color;
-		context.moveTo(triangle.x+100,triangle.y);
-		context.lineTo(triangle.x,triangle.y);
-		context.lineTo(triangle.x,triangle.y);
-		context.lineTo(triangle.x,triangle.y);
-		context.lineTo(triangle.x,triangle.y+100);
-	    context.closePath();
-        context.fill();
-	  }
+	  
+	  
 
 	  function drawCloud(cloud) {
 		 context.beginPath();
@@ -125,10 +119,10 @@
 			context.fill();
 	  }
 	  function drawText() {
-		context.fillStyle = 'red';
+		context.fillStyle = 'pink';
 		context.font = 'bold 2em helvetica';
 		context.textAlign = 'right';
-		context.fillText('roller over canvas!', canvas.width/2, canvas.height/2);
+		context.fillText('Click Canvas', canvas.width/2, canvas.height/2);
 	}
       function resizeCanvas() {
         canvas.width = window.innerWidth-20;
@@ -139,16 +133,14 @@
 				drawSquare(shapes[i]);
 			} else if (shapes[i].shape == 'circle') {
 				drawCircle(shapes[i]);
-			} else if (shapes[i].shape == 'triangle') {
-				drawTriangle(shapes[i]);
 			} else if (shapes[i].shape == 'drop') {
 				drawDrop(shapes[i]);
 			} else if (shapes[i].shape == 'cloud') {
 				drawCloud(shapes[i]);
 			}
-			if (shapes[i].x + shapes[i].dx > canvas.width || shapes[i].x + shapes[i].dx < 5)
+			if (shapes[i].x + shapes[i].dx > canvas.width || shapes[i].x + shapes[i].dx < 4)
 				shapes[i].dx = -shapes[i].dx;
-			if (shapes[i].y + shapes[i].dy > canvas.height || shapes[i].y + shapes[i].dy < 5)
+			if (shapes[i].y + shapes[i].dy > canvas.height || shapes[i].y + shapes[i].dy < 4)
 				shapes[i].dy = -shapes[i].dy;
 				shapes[i].x += shapes[i].dx;
 				shapes[i].y += shapes[i].dy;
@@ -162,7 +154,9 @@
 	function degreesToRadians(degrees) {
 		return (degrees * Math.PI)/180;
 	}
+	
 	window.onload = init;
+	 
 </script>
 </head>
 <body>
